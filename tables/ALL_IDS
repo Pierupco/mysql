@@ -1,0 +1,11 @@
+CREATE TABLE `ALL_IDS` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ASSET_TYPE` varchar(20) NOT NULL COMMENT 'values such as user, merchant, transaction, bank_account',
+  `CREATED_ON` datetime DEFAULT NULL,
+  `LAST_UPDATED` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `PROCESSED` bit(1) NOT NULL DEFAULT b'0' COMMENT 'whether processed -- future use',
+  `PRIORITY` tinyint(4) NOT NULL DEFAULT '5' COMMENT 'priority level to be processed -- future use',
+  `ACTIVE` bit(1) NOT NULL DEFAULT b'1',
+  `ACTION_TYPE` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1 -- insert, 2-- update, 3--delete',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
