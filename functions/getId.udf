@@ -1,0 +1,36 @@
+DELIMITER $$
+CREATE DEFINER=`bcsql`@`%` FUNCTION `getId`(asset_type VARCHAR(20)) RETURNS char(12) CHARSET utf8
+    DETERMINISTIC
+BEGIN
+	DECLARE last_id int;
+	DECLARE prefix CHAR(1);
+
+	CASE lower(asset_type)
+/*		WHEN 'ach' THEN SET prefix = 'A';
+		WHEN 'bankaccount' THEN SET prefix = 'B';
+		WHEN 'creditcard' THEN SET prefix = 'C';
+		WHEN 'address' THEN SET prefix = 'D';
+		WHEN 'directach' THEN SET prefix = 'E';
+		WHEN 'account' THEN SET prefix = 'F';
+		when 'transaction_on_hold' THEN SET prefix = 'H';
+		WHEN 'merchant' THEN SET prefix = 'M';
+		WHEN 'scheduledtransaction' THEN SET prefix = 'S';
+		WHEN 'requestmoney' THEN SET prefix = 'R';
+		WHEN 'transaction' THEN SET prefix = 'T';
+*/
+		WHEN 'user' THEN SET prefix = 'UR';
+		WHEN 'userdevice' THEN SET prefix = 'UD';
+/*
+		WHEN 'bankverification' THEN SET prefix='V';
+*/
+		ELSE SET prefix = '';
+	END CASE;
+
+	insert into ALL_IDS(ASSET_TYPE, CREATED_ON, ACTION_TYPE) values (asset_type, now(), 1);
+	SET last_id = last_insert_id();
+
+
+
+	RETURN CONCAT(prefix, LPAD(last_id, 12-LENGTH(prefix), '0'));
+END$$
+DELIMITER ;
